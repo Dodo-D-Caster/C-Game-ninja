@@ -1,0 +1,36 @@
+4-3-1
+添加了keyPressEvent方法，仿照mousePressEvent，添加对按键ascii值的输出。
+void CenterWidget::keyPressEvent(QKeyEvent *e){
+    keyPressInfo=tr("Key Press: ")+QString::number(e->key());
+    update();
+}
+同时，要在很多其他的地方进行一些修改
+比如添加this->grabKeyboard(); 、keyPressInfo=tr(""); 和 p.drawText(550,100,keyPressInfo);等。
+
+4-3-2
+首先，先添加一个新的菜单项 colorMenu（）； 并有 Black、Green、Yellow 三个菜单项。
+做法和 drawMenu（）；类似，对不同的颜色设置不同的type并用switch实现不同的功能。
+在build文件夹内导入各种颜色的gif图片，并设置不同颜色的快捷键和提示，并调用显示在窗口上。
+遇到的问题是
+switch(colorType){
+    case 0:{
+        QPen pen(Qt::black,2,Qt::SolidLine);
+        p.setPen(pen);
+        break;}
+    case 1:{
+        QPen pen(Qt::green,2,Qt::SolidLine);
+        p.setPen(pen);
+        break;}
+    case 2:{
+        QPen pen(Qt::yellow,2,Qt::SolidLine);
+        p.setPen(pen);
+        break;}
+    }
+这样是可以运行的，但是如果将p.setPen(pen);提出来放在外面就无法通过编译，对此我感到很奇怪。
+关于填充和按钮响应的问题，我查阅了很久，也对创建按键进行了很多尝试（有些还保留在我的注释里）
+最终，我选择了在centerwidget中声明了QPushButton *fill=new QPushButton(this);和void Onfillclicked(bool)；
+并在构造中加入了
+fill->setParent(this);
+fill->setText("填充");
+connect(fill,SIGNAL(clicked(bool)),this,SLOT(Onfillclicked(bool)));
+并通过槽Onfillclicked(bool)来实现填充。

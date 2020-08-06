@@ -1,0 +1,20 @@
+5-2-1
+这个比较简单，只需要在move中加入
+speed*=0.99;
+    if(speed<0.1)
+        speed=0;
+然后在checkCollision中加入speed*=0.95; 和小于0.1是停下即可
+
+5-2-2
+我首先在rightwidget中定义了
+void mousePressEvent(QMouseEvent *e);
+void mouseMoveEvent(QMouseEvent *e);
+void mouseReleaseEvent(QMouseEvent *e);
+分别满足在鼠标点击的时候记录起始点，在鼠标拖动的时候画线（返回点之后在paintevent中实现），在鼠标松开的时候记录终止点并计算角度等等后构建一个新的球。
+
+5-2-3
+在checkCollision中加入判定
+if(fabs(speed-b.speed)<0.1 && fabs(angle-b.angle)<20){
+            x=b.x+b.radius+radius;
+            y=b.y+b.radius+radius;
+        }
